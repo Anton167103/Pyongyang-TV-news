@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyongyang TV Новости</title>
+    <style>
+        :root {
+            /* Цветовая палитра */
+            --background-color: #121212;
+            --container-bg: #000;
+            --text-color: #f0f0f0;
+            --accent-color: #00bcd4; /* Голубой акцент */
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .channel-title {
+            font-size: 3.5vw; 
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5); 
+            letter-spacing: 2px;
+            white-space: nowrap; 
+            max-width: 600px; 
+        }
+
+        /* ======================================================= */
+        /* ГЛАВНЫЙ КОНТЕЙНЕР ДЛЯ МОНОЛИТНОГО БЛОКА */
+        /* ======================================================= */
+        .main-tv-frame {
+            width: 40vw; /* Задаем общую ширину здесь */
+            max-width: 600px;
+            border-radius: 12px; /* Общее скругление углов */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Общая тень */
+            overflow: hidden; /* Важно для скругления и отсутствия зазоров */
+            margin-bottom: 30px;
+        }
+
+        /* 1. БЕГУЩАЯ СТРОКА */
+        .news-ticker-wrap {
+            width: 100%; /* Занимает всю ширину родителя */
+            height: 30px;
+            background-color: #cc0000; 
+            color: white;
+            overflow: hidden; 
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            border-radius: 0; /* Убираем индивидуальное скругление */
+            box-shadow: none; 
+        }
+
+        .ticker-content {
+            white-space: nowrap; 
+            padding-left: 100%; 
+            animation: scroll-left 60s linear infinite; /* Установлена увеличенная скорость */
+        }
+
+        .ticker-text {
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            padding-right: 50px; 
+        }
+        
+        /* 2. КОНТЕЙНЕР ДЛЯ ТВ-ЭКРАНА */
+        .tv-container {
+            width: 100%; /* Занимает всю ширину родителя */
+            background: var(--container-bg);
+            border: none; 
+            box-shadow: none; 
+            overflow: hidden;
+            position: relative;
+            padding-top: 56.25%; /* Сохраняем соотношение 16:9 */
+        }
+
+        .tv-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 3. ИНФО-ПАНЕЛЬ */
+        .info-panel {
+            width: 100%; /* Занимает всю ширину родителя */
+            padding: 15px 20px;
+            background-color: #1e1e1e; 
+            border-radius: 0; 
+            box-shadow: none; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0; 
+        }
+
+        .live-indicator {
+            color: #ff3333; 
+            font-weight: bold;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+
+        .channel-description {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .refresh-button {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .refresh-button:hover {
+            background-color: rgba(0, 188, 212, 0.1);
+        }
+
+        /* ОПРЕДЕЛЕНИЕ АНИМАЦИИ */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-100%); 
+            }
+        }
+        
+        /* ======================================================= */
+        /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (МЕНЬШЕ 600px) */
+        /* ======================================================= */
+        @media (max-width: 600px) {
+            
+            /* Делаем заголовок больше и разрешаем перенос на телефоне */
+            .channel-title {
+                font-size: 8vw; 
+                width: 95vw;
+                white-space: normal; 
+            }
+            
+            /* Растягиваем ГЛАВНЫЙ КОНТЕЙНЕР на 95% ширины экрана */
+            .main-tv-frame {
+                width: 95vw;
+                max-width: 95vw; 
+                margin-top: 20px;
+            }
+
+            /* Уменьшаем вертикальный отступ */
+            body {
+                padding: 20px 0;
+            }
+
+            /* Уменьшаем шрифт на инфо-панели */
+            .live-indicator,
+            .channel-description {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1 class="channel-title">Pyongyang TV Новости</h1>
+    
+    <div class="main-tv-frame">        
+        <div class="news-ticker-wrap">
+            <div class="ticker-content">
+                <span class="ticker-text">
+                    <<< Pyongyang TV - Новости >>> ★ Уважаемый товарищ Ким Чен Ын ознакомился на месте с положением предприятий местной промышленности в преддверии завершения их строительства. ★ Ким Чен Ыну прислал ответную телеграмму лидер Лаоса ★ <<< Pyongyang TV - Новости >>> ★  4 декабря художественная труппа корейских школьников из Японии с цветами посетила бронзовые статуи Ким Ир Сена и Ким Чен Ира на возвышенности Мансу. ★ 3 и 4 декабря в Баскетбольном зале на улице Чхончхун Пхеньяна прошли 55 Спортивные соревнования деятелей искусств. ★ <<< Pyongyang TV - Новости >>> ★ В Тхэянском аграрном хозяйстве уезда Кенхын и Хенчжеском аграрном хозяйстве уезда Пурен провинции Северный Хамген построены дома для крестьян. ★ В провинции Южный Пхенъан КНДР молодые люди вызывались работать на шахтах. ★
+                </span>
+            </div>
+        </div>
+        
+        <div class="tv-container">
+            <iframe 
+                src="https://catcast.tv/player/49855" 
+                title="Встроенный плеер CatCast" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="info-panel">
+            <div class="live-indicator">● LIVE</div>
+            <div class="channel-description">Pyongyang TV Новости 24/7</div>
+            <button class="refresh-button" onclick="location.reload()">Обновить страницу</button>
+        </div>
+
+    </div> 
+    <p style="margin-top: 30px; color: #aaa;">Приятного просмотра!</p>
+
+</body>
+</html>

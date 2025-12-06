@@ -10,7 +10,7 @@
             --background-color: #121212;
             --container-bg: #000;
             --text-color: #f0f0f0;
-            --accent-color: #00bcd4; /* Голубой акцент */
+            --accent-color: #00bcd4;
         }
 
         body {
@@ -34,23 +34,44 @@
             letter-spacing: 2px;
             white-space: nowrap; 
             max-width: 600px; 
+            transition: color 0.3s, text-shadow 0.3s; /* Эффект свечения */
+        }
+        
+        .channel-title:hover {
+            color: white; 
+            text-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--accent-color); 
+            cursor: pointer;
         }
 
         /* ======================================================= */
         /* ГЛАВНЫЙ КОНТЕЙНЕР ДЛЯ МОНОЛИТНОГО БЛОКА */
         /* ======================================================= */
         .main-tv-frame {
-            width: 40vw; /* Задаем общую ширину здесь */
+            width: 40vw; 
             max-width: 600px;
-            border-radius: 12px; /* Общее скругление углов */
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Общая тень */
-            overflow: hidden; /* Важно для скругления и отсутствия зазоров */
+            border-radius: 12px; 
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); 
+            overflow: hidden; 
             margin-bottom: 30px;
+            transition: all 0.3s; /* Для плавного перехода в режим максимума */
         }
-
+        
+        /* КОРРЕКЦИЯ: Класс для режима максимального размера с рамкой */
+        .main-tv-frame.maximized {
+            position: fixed; 
+            top: 2vh; /* Отступ сверху/снизу */
+            left: 8vw; /* Отступ слева/справа */
+            width: 82vw !important; /* Уменьшаем до 96% ширины экрана */
+            max-width: 95vw !important;
+            height: 100vh; /* Уменьшаем до 96% высоты экрана */
+            border-radius: 13px; /* Возвращаем скругление углов */
+            z-index: 9999; 
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9); /* Делаем тень более заметной */
+        }
+        
         /* 1. БЕГУЩАЯ СТРОКА */
         .news-ticker-wrap {
-            width: 100%; /* Занимает всю ширину родителя */
+            width: 100%; 
             height: 30px;
             background-color: #cc0000; 
             color: white;
@@ -58,14 +79,14 @@
             display: flex;
             align-items: center;
             margin-bottom: 0;
-            border-radius: 0; /* Убираем индивидуальное скругление */
+            border-radius: 0; 
             box-shadow: none; 
         }
 
         .ticker-content {
             white-space: nowrap; 
             padding-left: 100%; 
-            animation: scroll-left 70s linear infinite; /* Установлена увеличенная скорость */
+            animation: scroll-left 90s linear infinite; 
         }
 
         .ticker-text {
@@ -76,13 +97,13 @@
         
         /* 2. КОНТЕЙНЕР ДЛЯ ТВ-ЭКРАНА */
         .tv-container {
-            width: 100%; /* Занимает всю ширину родителя */
+            width: 100%; 
             background: var(--container-bg);
             border: none; 
             box-shadow: none; 
             overflow: hidden;
             position: relative;
-            padding-top: 56.25%; /* Сохраняем соотношение 16:9 */
+            padding-top: 56.25%; 
         }
 
         .tv-container iframe {
@@ -96,7 +117,7 @@
 
         /* 3. ИНФО-ПАНЕЛЬ */
         .info-panel {
-            width: 100%; /* Занимает всю ширину родителя */
+            width: 100%; 
             padding: 15px 20px;
             background-color: #1e1e1e; 
             border-radius: 0; 
@@ -118,6 +139,25 @@
             font-size: 0.9em;
             color: #aaa;
         }
+        
+        /* Стили для НОВОЙ КНОПКИ */
+        .maximize-button {
+            background-color: transparent;
+            color: #ccc;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px; /* Отступ от кнопки Обновить */
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .maximize-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
 
         .refresh-button {
             background-color: transparent;
@@ -127,6 +167,8 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 0.9em;
+            white-space: nowrap;
         }
 
         .refresh-button:hover {
@@ -143,33 +185,36 @@
             }
         }
         
-        /* ======================================================= */
-        /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (МЕНЬШЕ 600px) */
-        /* ======================================================= */
+        /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
         @media (max-width: 600px) {
             
-            /* Делаем заголовок больше и разрешаем перенос на телефоне */
             .channel-title {
                 font-size: 8vw; 
                 width: 95vw;
                 white-space: normal; 
             }
             
-            /* Растягиваем ГЛАВНЫЙ КОНТЕЙНЕР на 95% ширины экрана */
             .main-tv-frame {
                 width: 95vw;
                 max-width: 95vw; 
                 margin-top: 20px;
             }
+            
+            .info-panel {
+                flex-wrap: wrap; /* Разрешаем кнопкам переноситься на маленьком экране */
+                gap: 10px;
+            }
 
-            /* Уменьшаем вертикальный отступ */
+            .maximize-button, .refresh-button {
+                flex-grow: 1;
+                margin-right: 0;
+            }
+
             body {
                 padding: 20px 0;
             }
 
-            /* Уменьшаем шрифт на инфо-панели */
-            .live-indicator,
-            .channel-description {
+            .live-indicator, .channel-description {
                 font-size: 0.8em;
             }
         }
@@ -177,13 +222,14 @@
 </head>
 <body>
 
-<h1 class="channel-title">Pyongyang TV Новости</h1>
+    <h1 class="channel-title">Pyongyang TV Новости</h1>
     
-    <div class="main-tv-frame">        
+    <div class="main-tv-frame">
+        
         <div class="news-ticker-wrap">
             <div class="ticker-content">
                 <span class="ticker-text">
-           ◆◆ Смотрите главные новости страны на Pyongyang TV – Новости 24/7! на русском языке ◆◆ ★ <<< Pyongyang TV - Новости >>> ★ Уважаемый товарищ Ким Чен Ын ознакомился на месте с положением предприятий местной промышленности в преддверии завершения их строительства. ★ Ким Чен Ыну прислал ответную телеграмму лидер Лаоса ★ ◆◆Pyongyang TV – Новости - Единственный новостной канал из Пхеньяна на русском языке! ◆◆ <<< Pyongyang TV - Новости >>> ★  4 декабря художественная труппа корейских школьников из Японии с цветами посетила бронзовые статуи Ким Ир Сена и Ким Чен Ира на возвышенности Мансу. ★ 3 и 4 декабря в Баскетбольном зале на улице Чхончхун Пхеньяна прошли 55 Спортивные соревнования деятелей искусств. ★ <<< Pyongyang TV - Новости >>> ★ В Тхэянском аграрном хозяйстве уезда Кенхын и Хенчжеском аграрном хозяйстве уезда Пурен провинции Северный Хамген построены дома для крестьян. ★ В провинции Южный Пхенъан КНДР молодые люди вызывались работать на шахтах. ★
+                    <<< Pyongyang TV - Новости >>> ★ Уважаемый товарищ Ким Чен Ын ознакомился на месте с положением предприятий местной промышленности в преддверии завершения их строительства. ★ 5 декабря ЦТАК распространило сообщение на тему "Славные плоды борьбы за устойчивый рост сельскохозяйственного производства".★ >>> Смотрите главные новости страны на Pyongyang TV – Новости 24/7 на русском языке! <<< ★ В провинции Канвон построены новые дома ★Ким Чен Ыну прислал ответную телеграмму лидер Лаоса. ★ <<< Pyongyang TV - Новости >>> ★   4 декабря художественная труппа корейских школьников из Японии с цветами посетила бронзовые статуи Ким Ир Сена и Ким Чен Ира на возвышенности Мансу. ◆ Pyongyang TV Новости – Единственный новостной канал из Пхеньяна на русском языке! ◆★ 3 и 4 декабря в Баскетбольном зале на улице Чхончхун Пхеньяна прошли 55 Спортивные соревнования деятелей искусств. ★  В городе Нампхо прилагают усилия к строительству рыбозаводов в целях рыбоводства в заливных рисовых полях. ★
                 </span>
             </div>
         </div>
@@ -199,11 +245,29 @@
         <div class="info-panel">
             <div class="live-indicator">● LIVE</div>
             <div class="channel-description">Pyongyang TV Новости 24/7</div>
+            
+            <button class="maximize-button" onclick="toggleMaximize()">[ ] Максимум</button>
+            
             <button class="refresh-button" onclick="location.reload()">Обновить страницу</button>
         </div>
 
     </div> 
+
     <p style="margin-top: 30px; color: #aaa;">Приятного просмотра!</p>
 
+    <script>
+        function toggleMaximize() {
+            const frame = document.querySelector('.main-tv-frame');
+            frame.classList.toggle('maximized');
+            
+            // Меняем текст кнопки при переключении
+            const button = document.querySelector('.maximize-button');
+            if (frame.classList.contains('maximized')) {
+                button.textContent = '[ ] Вернуть';
+            } else {
+                button.textContent = '[ ] Максимум';
+            }
+        }
+    </script>
 </body>
 </html>

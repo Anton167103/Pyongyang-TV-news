@@ -3,272 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Радио Голос Кореи</title>
+    <title>Радио Группы Солидарности с КНДР</title>
     <style>
-        :root {
-            /* Цветовая палитра */
-            --background-color: #121212;
-            --container-bg: #000;
-            --text-color: #f0f0f0;
-            --accent-color: #00bcd4;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Базовые настройки экрана */
+        html, body {
             margin: 0;
-            padding: 40px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .channel-title {
-            font-size: 3.5vw; 
-            margin-bottom: 30px;
-            text-align: center;
-            color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5); 
-            letter-spacing: 2px;
-            white-space: nowrap; 
-            max-width: 600px; 
-            transition: color 0.3s, text-shadow 0.3s; /* Эффект свечения */
-        }
-        
-        .channel-title:hover {
-            color: white; 
-            text-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--accent-color); 
-            cursor: pointer;
-        }
-
-        /* ======================================================= */
-        /* ГЛАВНЫЙ КОНТЕЙНЕР ДЛЯ МОНОЛИТНОГО БЛОКА */
-        /* ======================================================= */
-        .main-tv-frame {
-            width: 40vw; 
-            max-width: 600px;
-            border-radius: 12px; 
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); 
-            overflow: hidden; 
-            margin-bottom: 30px;
-            transition: all 0.3s; /* Для плавного перехода в режим максимума */
-        }
-        
-        /* КОРРЕКЦИЯ: Класс для режима максимального размера с рамкой */
-        .main-tv-frame.maximized {
-            position: fixed; 
-            top: 2vh; /* Отступ сверху/снизу */
-            left: 8vw; /* Отступ слева/справа */
-            width: 82vw !important; /* Уменьшаем до 96% ширины экрана */
-            max-width: 95vw !important;
-            height: 100vh; /* Уменьшаем до 96% высоты экрана */
-            border-radius: 13px; /* Возвращаем скругление углов */
-            z-index: 9999; 
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9); /* Делаем тень более заметной */
-        }
-        
-        /* 1. БЕГУЩАЯ СТРОКА */
-        .news-ticker-wrap {
-            width: 100%; 
-            height: 30px;
-            background-color: #cc0000; 
-            color: white;
-            overflow: hidden; 
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
-            border-radius: 0; 
-            box-shadow: none; 
-        }
-
-        .ticker-content {
-            white-space: nowrap; 
-            padding-left: 100%; 
-            animation: scroll-left 90s linear infinite; 
-        }
-
-        .ticker-text {
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            padding-right: 50px; 
-        }
-        
-        /* 2. КОНТЕЙНЕР ДЛЯ ТВ-ЭКРАНА */
-        .tv-container {
-            width: 100%; 
-            background: var(--container-bg);
-            border: none; 
-            box-shadow: none; 
+            padding: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            position: relative;
-            padding-top: 56.25%; 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #1a0202;
         }
 
-        .tv-container iframe {
-            position: absolute;
+        /* 1. НАДЕЖНЫЙ КРАСНЫЙ ФОН НА ВЕСЬ ЭКРАН */
+        .background-screen {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: radial-gradient(circle at center, #8a0000 0%, #4a0000 60%, #140000 100%);
+            z-index: 1;
+        }
+
+        /* Основной контейнер поверх фона */
+        .content-overlay {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 0 20px 0; /* Отступ снизу для плеера */
+        }
+
+        /* 2. БЕГУЩАЯ СТРОКА НА САМОМ ВЕРХУ */
+        .marquee-container {
+            width: 100%;
+            background: rgba(180, 0, 0, 0.95); /* Плотная красная подложка */
+            border-bottom: 3px solid #ff4d4d;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 12px 0;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            padding-left: 100%;
+            animation: scroll-marquee 195s linear infinite; /* Скорость движения строки */
+        }
+
+        @keyframes scroll-marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* 3. КОНТЕЙНЕР ДЛЯ ОФИЦИАЛЬНОГО ПЛЕЕРА ZENO.FM ВНИЗУ */
+        .player-wrap {
+            width: 100%;
+            max-width: 768px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0 15px 10px 15px;
+        }
+
+        /* Адаптивность iframe плеера под размеры экрана */
+        iframe {
+            width: 100%;
+            height: 380px; /* Ограничили высоту, чтобы плеер оставался небольшим и аккуратным */
+            border-radius: 8px;
             border: none;
         }
 
-        /* 3. ИНФО-ПАНЕЛЬ */
-        .info-panel {
-            width: 100%; 
-            padding: 15px 20px;
-            background-color: #1e1e1e; 
-            border-radius: 0; 
-            box-shadow: none; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0; 
+        .zeno-link {
+            display: block; 
+            font-size: 0.8em; 
+            line-height: 12px;
+            color: #888;
+            text-decoration: none;
+            margin-top: 5px;
         }
-
-        .live-indicator {
-            color: #ff3333; 
-            font-weight: bold;
-            font-size: 1.1em;
-            letter-spacing: 0.5px;
-        }
-
-        .channel-description {
-            font-size: 0.9em;
-            color: #aaa;
-        }
-        
-        /* Стили для НОВОЙ КНОПКИ */
-        .maximize-button {
-            background-color: transparent;
-            color: #ccc;
-            border: 1px solid #ccc;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px; /* Отступ от кнопки Обновить */
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-
-        .maximize-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .refresh-button {
-            background-color: transparent;
-            color: var(--accent-color);
-            border: 1px solid var(--accent-color);
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-
-        .refresh-button:hover {
-            background-color: rgba(0, 188, 212, 0.1);
-        }
-
-        /* ОПРЕДЕЛЕНИЕ АНИМАЦИИ */
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(0%);
-            }
-            100% {
-                transform: translateX(-100%); 
-            }
-        }
-        
-        /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
-        @media (max-width: 600px) {
-            
-            .channel-title {
-                font-size: 8vw; 
-                width: 95vw;
-                white-space: normal; 
-            }
-            
-            .main-tv-frame {
-                width: 95vw;
-                max-width: 95vw; 
-                margin-top: 20px;
-            }
-            
-            .info-panel {
-                flex-wrap: wrap; /* Разрешаем кнопкам переноситься на маленьком экране */
-                gap: 10px;
-            }
-
-            .maximize-button, .refresh-button {
-                flex-grow: 1;
-                margin-right: 0;
-            }
-
-            body {
-                padding: 20px 0;
-            }
-
-            .live-indicator, .channel-description {
-                font-size: 0.8em;
-            }
+        .zeno-link:hover {
+            color: #ff4d4d;
         }
     </style>
 </head>
 <body>
 
-    <h1 class="channel-title">Радио Голос Кореи</h1>
-    
-    <div class="main-tv-frame">
+    <!-- Задний фон страницы -->
+    <div class="background-screen"></div>
+
+    <!-- Контент интерфейса -->
+    <div class="content-overlay">
         
-        <div class="news-ticker-wrap">
-            <div class="ticker-content">
-                <span class="ticker-text">
-                    <<< Радио Голос Кореи >>>  🇰🇵★★★🇰🇵  >>>  Слушайте главные новости страны на Радио Голос Кореи 24/7 на русском языке! <<< 🇰🇵★★★🇰🇵 <<<  Радио Голос Кореи  >>>   🇰🇵★★★🇰🇵   ◆ Радио Голос Кореи – Новостной канал из Пхеньяна на русском языке! ◆  🇰🇵★★★🇰🇵   Уважаемому товарищу Ким Чен Ыну прислал ответную телеграмму глава КНР    ◆    Ким Сон Ок, проживающая в 61 соседской группе квартала Сансон города Хэчжу провинции Южный Хванхэ, отметила столетие.    ◆    Открылась "Общегосударственная выставка одежды и обуви - 2026"     ◆     21 октября в Храме науки и техники состоялся Осенний эстетический семинар представителей области охраны земли и окружающей среды 2026 года на тему "Период всестороннего развития социализма и вид автодороги"     ◆     18 и 19 октября в Пхеньяне состоялся слет Общества Красного Креста КНДР при участии членов ЦК, провинциальных, городских и уездных комитетов названного общества         <<< Радио Голос Кореи >>>   🇰🇵★★★🇰🇵   >>>      Уважаемому товарищу Ким Чен Ыну прислал ответную телеграмму глава КНР    ◆    Ким Сон Ок, проживающая в 61 соседской группе квартала Сансон города Хэчжу провинции Южный Хванхэ, отметила столетие.    ◆    Открылась "Общегосударственная выставка одежды и обуви - 2026"     ◆     21 октября в Храме науки и техники состоялся Осенний эстетический семинар представителей области охраны земли и окружающей среды 2026 года на тему "Период всестороннего развития социализма и вид автодороги"     ◆     18 и 19 октября в Пхеньяне состоялся слет Общества Красного Креста КНДР при участии членов ЦК, провинциальных, городских и уездных комитетов названного общества
-                </span>
+        <!-- Бегущая строка (на самом верху) -->
+        <div class="marquee-container">
+            <div class="marquee-text">
+                <<< Радио Группы Солидарности с КНДР >>> 🇰🇵★★★🇰🇵
+                    >>> Слушайте Радио Группы Солидарности с КНДР! 
+                    <<< 🇰🇵★★★🇰🇵 >>> 📻🇰🇵 
+                    ◆ В эфире нашего радио слушайте часовую программу Радио Голос Кореи, в которой передаются свежие 
+              сообщения о событиях в КНДР и за рубежом, информационные передачи, обзоры и комментарии, рассказы о жизни, 
+               культуре, истории и традициях Кореи, а также музыку, песни и мелодии Корейской Народно-Демократической  
+                Республики  ◆  ◆ 📻🇰🇵
+                    🇰🇵★★★🇰🇵 ◆ 📻🇰🇵 📻🇰🇵 📻🇰🇵
+                Новости:    ◆ Ко Чхун Сом из 22 соседской группы квартала Чандок города Вонсан провинции Канвон КНДР отметила столетие. По заботе уважаемого товарища Ким Чен Ына для нее накрыт юбилейный стол. ◆  📻🇰🇵  ◆
+                    21 и 22 октября в провинциях(в городах центрального подчинения) состоялись митинги педагогов для выполнения программных задач, которые наметил уважаемый товарищ Ким Чен Ын во время посещения Университета имени Ким Ир Сена, отмечающего свое 80-летие.  ◆  📻🇰🇵  ◆  Под патронажем Пхеньянского городского комитета Союза корейских архитекторов состоялся IV технический фестиваль моделирования архитектурной информации с 20 по 22 октября в Доме образцов изделий легкой промышленности. ◆  📻🇰🇵  ◆ С 19 по 21 октября в городе Самчжиен провинции Рянган КНДР состоялась Самчжиенская туристическая выставка - 2026 на тему "Для разнообразного и оригинального туризма в горах" ◆  📻🇰🇵 ◆ В провинции Северный Хамген проходят реконструкцию станции сельхозмашин. ◆ 📻🇰🇵  ◆ 22 октября прибыла в Пхеньян делегация Управления по делам отставных воинов Китая во главе с заместителем начальника Хон Цонмином. ◆ 📻🇰🇵 ◆ По случаю 81 годовщины со дня основания ТПК в Бразилии в режиме он-лайн состоялся объединенный семинар на тему "81 годовщина со дня основания ТПК: самостоятельность, суверенитет, социализм" 📻🇰🇵📻🇰🇵📻🇰🇵
+                    <<< Радио Группы Солидарности с КНДР >>> 🇰🇵★★★🇰🇵  ◆ 📻🇰🇵
+
             </div>
         </div>
-        
-        <div class="tv-container">
-            <iframe 
-                src="https://catcast.tv/player/54119" 
-                title="Встроенный плеер CatCast" 
-                allowfullscreen>
-            </iframe>
+
+        <!-- Официальный плеер Zeno.fm (в самом низу) -->
+        <div class="player-wrap">
+            <iframe src="https://zeno.fm/player/radio-gruppy-solidarnosti-s-kndr-f4ho" frameborder="0" scrolling="no"></iframe>
+            <a href="https://zeno.fm/" target="_blank" class="zeno-link">A Zeno.FM Station</a>
         </div>
 
-        <div class="info-panel">
-            <div class="live-indicator">● LIVE</div>
-            <div class="channel-description">Радио Голос Кореи 24/7</div>
-            
-            <button class="maximize-button" onclick="toggleMaximize()">[ ] Максимум</button>
-            
-            <button class="refresh-button" onclick="location.reload()">Обновить страницу</button>
-        </div>
+    </div>
 
-    </div> 
-
-    <p style="margin-top: 30px; color: #aaa;">Приятного прослушивания!</p>
-
-    <script>
-        function toggleMaximize() {
-            const frame = document.querySelector('.main-tv-frame');
-            frame.classList.toggle('maximized');
-            
-            // Меняем текст кнопки при переключении
-            const button = document.querySelector('.maximize-button');
-            if (frame.classList.contains('maximized')) {
-                button.textContent = '[ ] Вернуть';
-            } else {
-                button.textContent = '[ ] Максимум';
-            }
-        }
-    </script>
 </body>
 </html>
+
 
